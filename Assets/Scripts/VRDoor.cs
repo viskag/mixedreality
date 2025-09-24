@@ -11,9 +11,13 @@ public class VRDoor : MonoBehaviour
     public float doorOpenAngle = 90f;    // how far door swings open
     public float openSpeed = 2f;
 
+    [Header("Heaven settings")]
+    public GameObject heaven;       // The heaven object to reveal
+
     private bool isUnlocked = false;
     private bool isOpen = false;
     private Quaternion doorClosedRot;
+
 
     void Start()
     {
@@ -27,16 +31,27 @@ public class VRDoor : MonoBehaviour
         {
             Quaternion targetRot = Quaternion.Euler(0, doorOpenAngle, 0);
             door.localRotation = Quaternion.Slerp(door.localRotation, targetRot, Time.deltaTime * openSpeed);
+            ShowHeaven();
 
             if (Quaternion.Angle(door.localRotation, targetRot) < 1f)
             {
                 isOpen = true;
                 Debug.Log("Door Opened!");
+                
             }
         }
     }
     public void OpenDoor()
     {
         isUnlocked = true;
+    }
+
+    private void ShowHeaven()
+    {
+        if (heaven != null)
+        {
+            heaven.SetActive(true);
+            Debug.Log("Heaven Revealed!");
+        }
     }
 }
